@@ -47,15 +47,17 @@ var mainState = {
     }
   },
   update:function(){
-    if(this.cursor.left.isDown)
-      this.player.body.velocity.x = -200;
-    else if(this.cursor.right.isDown)
-      this.player.body.velocity.x = 200;
-    else
-      this.player.body.velocity.x = 0;
 
-    if (this.cursor.up.isDown && this.player.body.touching.down)
-      this.player.body.velocity.y = -250;
+    if(this.cursor.left.isDown){
+      this.player.body.velocity.x = -200;
+    }else if(this.cursor.right.isDown){
+      this.player.body.velocity.x = 200;
+    }else{
+      this.player.body.velocity.x = 0;
+    }
+
+    if (this.cursor.up.isDown && this.player.body.touching.down){
+      this.player.body.velocity.y = -250;}
 
     game.physics.arcade.collide(this.player, this.walls);
     game.physics.arcade.overlap(this.player, this.coins, this.takeCoin, null, this);
