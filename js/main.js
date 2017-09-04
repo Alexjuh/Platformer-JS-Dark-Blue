@@ -1,5 +1,4 @@
-var game = new Phaser.Game(500,200,Phaser.AUTO, '',{
-
+var game = new Phaser.Game(700,700,Phaser.AUTO, '',{
 });
 
 var player;
@@ -9,6 +8,9 @@ var coins;
 var enemies;
 var takeCoin;
 var restart;
+
+var score = 0;
+var scoreText;
 
 var mainState = {
 
@@ -24,7 +26,7 @@ var mainState = {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.world.enableBody = true;
 
-    player = game.add.sprite(70,100,'player');
+    player = game.add.sprite(70,630,'player');
     game.physics.arcade.enable(player);
     player.body.bounce.y = 0.2;
     player.body.gravity.y = 600;
@@ -35,13 +37,38 @@ var mainState = {
     enemies = game.add.group();
 
     var level = [
-      'xxxxxxxxxxxxxxxxxxxxxx',
-      '!             !      x',
-      '!        o   o       x',
-      '!             o      x',
-      '!                    x',
-      '!   o     !    x     x',
-      'xxxxxxxxxxxxxxxxx!!!!x',
+      'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+      '!             !                x',
+      '!        o   o                 x',
+      '!                 o            x',
+      '!             !                x',
+      '!   o   xxxxx  x               x',
+      'x                 x         xx x',
+      'x!!!!!!!!!!!   !!!!!!!!!!!!!!! x',
+      'x                              x',
+      'xxxxxxxxxxxx  xxxxxxxxxxxxxxxxxx',
+      'x                              x',
+      'x  o                           x',
+      'x          xxxxxxxxxxxxxxxxxx  x',
+      'x!!!               x!          x',
+      'x       x        o x! xxxxxxxxxx',
+      'x                  x!          x',
+      'xxxxxxxxx    !!!!  xxxxxxxxx  ox',
+      'x o          !  !  xxxxxxxxxx!xx',
+      'x           x!  !            ! x',
+      'x        x   !o !              x',
+      'x!!!x   o    !  !  o           x',
+      'x                              x',
+      'x  xxxxxxxxxxxxxxxxxxxx        x',
+      'x                              x',
+      'x     o                      xxx',
+      'x                 o            x',
+      'x  x!!!!!x!!x!!!xxxx!          x',
+      'x              x         xxo   x',
+      'x            o x               x',
+      'xxxxxxxxxxxxxxxx o  xxxxxxxx!!!x',
+      'x                              x',
+      'xxxxxxxxxxxxxxxxx!!!!xxxxxxxxxxx',
     ];
 
     for (var i = 0; i < level.length; i++){
@@ -62,9 +89,13 @@ var mainState = {
       }
     }
 
-    cursors = game.input.keyboard.createCursorKeys();
+    scoreText = game.add.text(16,16,'Score: 0',{
+      fontsize: '32px', fill: '#FFF'
+    });
 
+    cursors = game.input.keyboard.createCursorKeys();
   },
+
   update:function(){
     var hitWall = game.physics.arcade.collide(player,walls);
 
@@ -77,18 +108,21 @@ var mainState = {
     }
 
     if (cursors.up.isDown && player.body.touching.down && hitWall){
-      player.body.velocity.y = -250;}
+      player.body.velocity.y = -280;}
 
     game.physics.arcade.collide(player,walls);
     game.physics.arcade.overlap(player, coins, takeCoin, null, this);
-    game.physics.arcade.overlap(player,enemies,restart, null, this);
+    game.physics.arcade.overlap(player, enemies, restart, null, this);
 
     function takeCoin(player,coin){
       coin.kill();
+      score += 1;
+      scoreText.text = 'Score: ' + score;
     }
 
     function restart(){
       game.state.start('main');
+      score = 0;
     }
   }
 };

@@ -82,6 +82,4 @@ function update(){
     score += 10;
     scoreText.text = 'Score: ' + score;
   }
-
-
 }
